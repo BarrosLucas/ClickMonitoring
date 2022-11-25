@@ -19,7 +19,7 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         children: [NavigationBarWeb(controller: controller,), Expanded(child: page())],
       ),
