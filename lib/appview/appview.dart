@@ -5,6 +5,7 @@ import 'package:embarcados/ui/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../widget/navigationbar.dart';
+import '../ui/home/maps_page/MapsPage.dart';
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
 
@@ -29,9 +30,10 @@ class _AppViewState extends State<AppView> {
     return Observer(
       builder: (_){
         switch(controller.page){
-          case 1:
-            return Home();
           case 2:
+            //return Home();
+            return MapsPage();
+          case 1:
             return Acompanhar();
           case 3:
             return Entregas();
