@@ -1,11 +1,14 @@
 import 'package:embarcados/ui/entregas/controller.dart';
+import 'package:embarcados/ui/history/History.dart';
 import 'package:embarcados/widget/column_table_data.dart';
 import 'package:embarcados/widget/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:embarcados/appview/controller.dart' as C;
 
 class Entregas extends StatefulWidget {
-  const Entregas({Key? key}) : super(key: key);
+  final C.Controller appViewController;
+  const Entregas({Key? key, required this.appViewController}) : super(key: key);
 
   @override
   State<Entregas> createState() => _EntregasState();
@@ -41,7 +44,12 @@ class _EntregasState extends State<Entregas> {
     return Observer(builder: (_){
       List<Widget> icons = [];
       for(var a = 0; a < controller.startsList.length; a++){
-        icons.add(Image.asset("assets/images/search.png",height: 25,width: 25,));
+        icons.add(InkWell(
+          child: Image.asset("assets/images/search.png",height: 25,width: 25,),
+          onTap: (){
+            widget.appViewController.setPage(4);
+          },
+        ));
       }
 
       List<String> stops = [];

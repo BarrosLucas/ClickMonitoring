@@ -7,7 +7,7 @@ class TitlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 50, top: 50, bottom: 20),
-      child: Text("${title}", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'Bungee'),),
+      child: Text("${title}", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'Bungee'),textAlign: TextAlign.start,),
     );
   }
 }

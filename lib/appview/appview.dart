@@ -1,6 +1,7 @@
 import 'package:embarcados/appview/controller.dart';
 import 'package:embarcados/ui/acompanhar/Acompanhar.dart';
 import 'package:embarcados/ui/entregas/Entregas.dart';
+import 'package:embarcados/ui/history/History.dart';
 import 'package:embarcados/ui/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -36,7 +37,9 @@ class _AppViewState extends State<AppView> {
           case 1:
             return Acompanhar();
           case 3:
-            return Entregas();
+            return Entregas(appViewController: controller,);
+          case 4:
+            return History();
         }
         return Home();
       },
