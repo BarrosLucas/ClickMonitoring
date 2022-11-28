@@ -25,19 +25,24 @@ class _NavigationBarWebState extends State<NavigationBarWeb> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFFD9D9D9)
+              InkWell(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Color(0xFFD9D9D9)
+                  ),
+                  height: 70,
+                  width: 200,
+                  child: Image.asset( "assets/images/logo.png"),
                 ),
-                height: 70,
-                width: 200,
-                child: Image.asset( "assets/images/logo.png"),
+                onTap: (){
+                  widget.controller.setPage(0);
+                },
               ),
 
               NavigationItem(
                 title: 'Acompanhar',
                 controller: widget.controller,
-                page: 2,
+                page: 1,
               ),
               NavigationItem(
                 title: 'Entregas',

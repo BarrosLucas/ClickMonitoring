@@ -19,9 +19,7 @@ class MapsPageState extends State<MapsPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body:getMap()
-    );
+    return getMap();
 
 
   }
@@ -162,7 +160,7 @@ class MapsPageState extends State<MapsPage> {
           ],
       ];
 
-      final myLatlng = gMap.LatLng(-7.1622872,-34.8215855);
+      final myLatlng = gMap.LatLng(-7.1637244368737445, -34.827505162559135);
 
       final mapOptions = gMap.MapOptions()
         ..streetViewControl = false
@@ -170,7 +168,7 @@ class MapsPageState extends State<MapsPage> {
         ..fullscreenControl = false
         ..mapTypeControl = false
         ..zoom = 15
-        ..center = gMap.LatLng(-7.1622872,-34.8215855)
+        ..center = gMap.LatLng(-7.1637244368737445, -34.827505162559135)
         ..styles = featureOps;
 
       final elem = DivElement()

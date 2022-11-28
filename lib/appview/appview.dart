@@ -33,10 +33,9 @@ class _AppViewState extends State<AppView> {
       builder: (_){
         switch(controller.page){
           case 2:
-            //return Home();
-            return MapsPage();
+            return Home();
           case 1:
-            return Acompanhar();
+            return Acompanhar(appController: controller);
           case 3:
             return Entregas(appViewController: controller,);
           case 4:
@@ -44,7 +43,7 @@ class _AppViewState extends State<AppView> {
           case 5:
             return R.Route(appController: controller,);
         }
-        return Home();
+        return MapsPage();
       },
     );
   }

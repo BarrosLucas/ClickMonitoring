@@ -51,13 +51,17 @@ class _EntregasState extends State<Entregas> {
           },
         ));
       }
-
+      
       List<Widget> iconsRoutes = [];
       for(var a = 0; a < controller.startsList.length; a++){
         iconsRoutes.add(InkWell(
           child: Image.asset("assets/images/search.png",height: 25,width: 25,),
           onTap: (){
-            widget.appViewController.setPage(5);
+            if(controller.finishesList.elementAt(a)=="EM TRÂNSITO"){
+              widget.appViewController.setPage(1);
+            }else{
+              widget.appViewController.setPage(5);
+            }
           },
         ));
       }

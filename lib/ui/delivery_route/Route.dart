@@ -33,7 +33,7 @@ class RouteState extends State<Route> {
 
 
   Widget getMap(){
-    String htmlId = "7";
+    String htmlId = "9";
 
     //a ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
