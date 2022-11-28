@@ -52,6 +52,16 @@ class _EntregasState extends State<Entregas> {
         ));
       }
 
+      List<Widget> iconsRoutes = [];
+      for(var a = 0; a < controller.startsList.length; a++){
+        iconsRoutes.add(InkWell(
+          child: Image.asset("assets/images/search.png",height: 25,width: 25,),
+          onTap: (){
+            widget.appViewController.setPage(5);
+          },
+        ));
+      }
+
       List<String> stops = [];
       for(var a = 0; a < controller.stopsList.length; a++){
         stops.add(controller.stopsList.elementAt(a).toString());
@@ -84,7 +94,7 @@ class _EntregasState extends State<Entregas> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: ColumnDataTable(titleColumn: "TRAJETO", widgets: icons),
+              child: ColumnDataTable(titleColumn: "TRAJETO", widgets: iconsRoutes),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),

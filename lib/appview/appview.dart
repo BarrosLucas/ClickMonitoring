@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../widget/navigationbar.dart';
 import '../ui/home/maps_page/MapsPage.dart';
+import 'package:embarcados/ui/delivery_route/Route.dart' as R;
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
 
@@ -40,6 +41,8 @@ class _AppViewState extends State<AppView> {
             return Entregas(appViewController: controller,);
           case 4:
             return History();
+          case 5:
+            return R.Route(appController: controller,);
         }
         return Home();
       },

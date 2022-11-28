@@ -1,36 +1,41 @@
 import 'dart:html';
 import 'dart:js_util';
-import 'dart:ui' as ui;
-import 'package:embarcados/ui/home/maps_page/controller.dart';
+import 'controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_maps/google_maps.dart' as gMap;
 import 'package:google_maps/google_maps.dart';
+import 'package:embarcados/appview/controller.dart' as app;
+import 'package:google_maps/google_maps_places.dart';
+import 'package:mobx/mobx.dart';
+import 'dart:ui' as ui;
 
+class Route extends StatefulWidget {
+  final app.Controller appController;
+  const Route({Key? key, required this.appController}):super(key: key);
 
-class MapsPage extends StatefulWidget {
   @override
-  State<MapsPage> createState() => MapsPageState();
+  State<Route> createState() => RouteState();
 }
 
-class MapsPageState extends State<MapsPage> {
+class RouteState extends State<Route> {
+
+  late gMap.Polyline poly;
   Controller controller = Controller();
 
   @override
   Widget build(BuildContext context) {
-
+    controller.load();
     return Scaffold(
-      body:getMap()
+        body:getMap()
     );
-
-
   }
 
 
   Widget getMap(){
     String htmlId = "7";
 
-    // ignore: undefined_prefixed_name
+    //a ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
       final featureOps = <MapTypeStyle>[
         MapTypeStyle()
@@ -162,15 +167,14 @@ class MapsPageState extends State<MapsPage> {
           ],
       ];
 
-      final myLatlng = gMap.LatLng(-7.1622872,-34.8215855);
 
       final mapOptions = gMap.MapOptions()
         ..streetViewControl = false
         ..zoomControl = false
         ..fullscreenControl = false
         ..mapTypeControl = false
-        ..zoom = 15
-        ..center = gMap.LatLng(-7.1622872,-34.8215855)
+        ..zoom = 17
+        ..center = controller.center
         ..styles = featureOps;
 
       final elem = DivElement()
@@ -181,59 +185,46 @@ class MapsPageState extends State<MapsPage> {
 
       final map = gMap.GMap(elem, mapOptions);
 
-      final _icon = gMap.Icon()
-        ..scaledSize = gMap.Size(40, 60)
-        ..url = "assets/images/marker.png";
+      for(var i = 0; i < controller.stops.length; i++){
+        gMap.Marker(gMap.MarkerOptions()
+          ..position = controller.stops.elementAt(i)
+          ..map = map
+          ..title = 'Hello World!'
+        );
+      }
 
-      final marker = gMap.Marker(gMap.MarkerOptions()
-        ..position = myLatlng
-        ..map = map
-        ..icon = _icon
-        ..title = 'Hello World!'
-      );
+      final polyOptions = PolylineOptions()
+        ..strokeColor = '#76B2EB'
+        ..strokeOpacity = 1.0
+        ..strokeWeight = 3;
+      poly = Polyline(polyOptions)..map = map;
 
-      marker.onClick.listen((e) {
-        setState(() {
-          controller.setVisible(true,"Entrega de carne para o mercadinho",10.0,-30.0,100,"Saudável");
-        });
-      });
+      for(var i = 0; i < controller.coordinates.length; i++){
+        poly.path!
+            .push(controller.coordinates.elementAt(i));
+      }
 
       return elem;
     });
 
 
-    return Stack(
-      children: [
-        HtmlElementView(viewType: htmlId),
-        backgroundWindow(),
-        windowTapMarker()
-      ],
+    return Observer(
+      builder: (_){
+        return Stack(
+          children: [
+            HtmlElementView(viewType: htmlId),
+            Positioned(child: windowTapMarker(),bottom: 5,left: 5,),
+            Positioned(child: getBackButton(),top: 5,left: 5,)
+          ],
+        );
+      },
     );
-  }
-
-  Widget backgroundWindow(){
-    return Observer(builder: (_){
-      return Visibility(visible: controller.visible,child: InkWell(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-              color: Color(0x00FFFFFF)
-          ),
-        ),
-        onTap: (){
-          controller.setVisible(false,"",0.0,0.0,0.0,"");
-        },
-      ),);
-    });
   }
 
   Widget windowTapMarker(){
     return Observer(builder: (_){
-      return Center(child: Visibility(
-        visible: controller.visible,
-        child: Container(
-          width: 270,
+      return Container(
+          width: 350,
           height: 260,
           padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 20),
           decoration: const BoxDecoration(
@@ -248,13 +239,25 @@ class MapsPageState extends State<MapsPage> {
               Text(controller.description,style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
               Row(
                 children: [
-                  const Text("Velocidade: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                  const Text("Distância Percorrida: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                  Text("${controller.distance}km",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text("Duração: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                  Text("${controller.duration}",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text("Velocidade Média: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                   Text("${controller.speed}km/h",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                 ],
               ),
               Row(
                 children: [
-                  const Text("Temperatura: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                  const Text("Temperatura Média da Carga: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                   Text("${controller.temperature}° C",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                 ],
               ),
@@ -271,26 +274,30 @@ class MapsPageState extends State<MapsPage> {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  InkWell(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                      ),
-                      margin: const EdgeInsets.only(top: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 10),
-                      child: const Text("ACOMPANHAR", style: TextStyle(color: Colors.white),),
-                    ),
-                  )
+                  const Text("Motorista: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                  Text("${controller.driver}",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,)
                 ],
-              )
+              ),
             ],
           ),
+        );
+      });
+  }
+
+  Widget getBackButton(){
+    return InkWell(
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: const Color(0xFF35185A)
         ),
-      ));
-    });
+        child: Image.asset("assets/images/arrow_back.png",height: 40,width: 40,),
+      ),
+      onTap: (){
+        widget.appController.setPage(3);
+      },
+    );
   }
 }
