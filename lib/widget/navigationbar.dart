@@ -52,7 +52,7 @@ class _NavigationBarWebState extends State<NavigationBarWeb> {
               Expanded(child: NavigationItem(
                   title: 'Minha Conta',
                   controller: widget.controller,
-                  page: 1,
+                  page: 6,
                 align: true,
               ),)
             ],

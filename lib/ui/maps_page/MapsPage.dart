@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'dart:js_util';
 import 'dart:ui' as ui;
-import 'package:embarcados/ui/home/maps_page/controller.dart';
+import 'package:embarcados/ui/maps_page/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_maps/google_maps.dart' as gMap;

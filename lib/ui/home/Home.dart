@@ -1,7 +1,9 @@
+import 'package:embarcados/appview/controller.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  final Controller appController;
+  const Home({Key? key, required this.appController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +29,24 @@ class Home extends StatelessWidget {
                 userIcon()
               ],
             ),
-            Container(
-              width: 250,
-              height: 330,
-              margin: EdgeInsets.only(left: 50),
-              decoration: const BoxDecoration(
-                color: Color(0xFFFB806F)
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("+",textAlign: TextAlign.center,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee", fontSize: 120),),
-                  Text("NOVA ENTREGA",textAlign: TextAlign.center,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee", fontSize: 40),)
-                ],
+            InkWell(
+              onTap: (){
+                appController.setPageVisibleNewDelivery(true);
+              },
+              child: Container(
+                width: 250,
+                height: 330,
+                margin: EdgeInsets.only(left: 50),
+                decoration: const BoxDecoration(
+                    color: Color(0xFFFB806F)
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("+",textAlign: TextAlign.center,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee", fontSize: 120),),
+                    Text("NOVA ENTREGA",textAlign: TextAlign.center,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee", fontSize: 40),)
+                  ],
+                ),
               ),
             )
           ],
@@ -49,46 +56,56 @@ class Home extends StatelessWidget {
   }
 
   Widget truckIcon(){
-    return Container(
-      width: 600,
-      height: 150,
-      decoration: const BoxDecoration(
-        color: Color(0xFF35185A)
-      ),
-      child: Row(
-       mainAxisAlignment: MainAxisAlignment.center,
-       crossAxisAlignment: CrossAxisAlignment.center,
-       children: [
-         Container(
-           width: 70,
-           height: 70,
-           margin: EdgeInsets.only(right: 20),
-           child: Image.asset("assets/images/vehicle.png"),),
-         const Text("ENTREGAS", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee",fontSize: 60),)
-       ],
+    return InkWell(
+      onTap: (){
+        appController.setPage(3);
+      },
+      child: Container(
+        width: 600,
+        height: 150,
+        decoration: const BoxDecoration(
+            color: Color(0xFF35185A)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 70,
+              height: 70,
+              margin: EdgeInsets.only(right: 20),
+              child: Image.asset("assets/images/vehicle.png"),),
+            const Text("ENTREGAS", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee",fontSize: 60),)
+          ],
+        ),
       ),
     );
   }
 
   Widget userIcon(){
-    return Container(
-      width: 600,
-      height: 150,
-      decoration: const BoxDecoration(
-          color: Color(0xFF35185A)
-      ),
-      margin: EdgeInsets.only(top: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 70,
-            height: 70,
-            margin: EdgeInsets.only(right: 20),
-            child: Image.asset("assets/images/user1.png"),),
-          const Text("MINHA CONTA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee",fontSize: 60),)
-        ],
+    return InkWell(
+      onTap: (){
+        appController.setPage(6);
+      },
+      child: Container(
+        width: 600,
+        height: 150,
+        decoration: const BoxDecoration(
+            color: Color(0xFF35185A)
+        ),
+        margin: EdgeInsets.only(top: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 70,
+              height: 70,
+              margin: EdgeInsets.only(right: 20),
+              child: Image.asset("assets/images/user1.png"),),
+            const Text("MINHA CONTA", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: "Bungee",fontSize: 60),)
+          ],
+        ),
       ),
     );
   }

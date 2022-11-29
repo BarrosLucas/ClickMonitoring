@@ -5,10 +5,18 @@ class Controller = ControllerBase with _$Controller;
 
 abstract class ControllerBase with Store{
   @observable
-  String contactNumber = "";
+  String cnpj = "";
+
+  @observable
+  String socialReason = "";
+
+  @observable
+  String headOffice = "";
 
   @action
   load(){
-    contactNumber = "(83) 9 9999-9999";
+    cnpj = "101010100-0110";
+    socialReason = "Transportar";
+    headOffice = "Rua 1, ao lado da Rua 2";
   }
 }

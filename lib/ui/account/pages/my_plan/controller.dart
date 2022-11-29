@@ -5,10 +5,14 @@ class Controller = ControllerBase with _$Controller;
 
 abstract class ControllerBase with Store{
   @observable
-  String contactNumber = "";
+  String dateStart = "";
+
+  @observable
+  String dateFinish = "";
 
   @action
   load(){
-    contactNumber = "(83) 9 9999-9999";
+    dateStart = "01/01/2020";
+    dateFinish = "12/12/2022";
   }
 }

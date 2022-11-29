@@ -24,23 +24,6 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$newDeliveryPageVisibleAtom =
-      Atom(name: 'ControllerBase.newDeliveryPageVisible', context: context);
-
-  @override
-  bool get newDeliveryPageVisible {
-    _$newDeliveryPageVisibleAtom.reportRead();
-    return super.newDeliveryPageVisible;
-  }
-
-  @override
-  set newDeliveryPageVisible(bool value) {
-    _$newDeliveryPageVisibleAtom
-        .reportWrite(value, super.newDeliveryPageVisible, () {
-      super.newDeliveryPageVisible = value;
-    });
-  }
-
   late final _$ControllerBaseActionController =
       ActionController(name: 'ControllerBase', context: context);
 
@@ -56,21 +39,9 @@ mixin _$Controller on ControllerBase, Store {
   }
 
   @override
-  dynamic setPageVisibleNewDelivery(bool newValue) {
-    final _$actionInfo = _$ControllerBaseActionController.startAction(
-        name: 'ControllerBase.setPageVisibleNewDelivery');
-    try {
-      return super.setPageVisibleNewDelivery(newValue);
-    } finally {
-      _$ControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
-page: ${page},
-newDeliveryPageVisible: ${newDeliveryPageVisible}
+page: ${page}
     ''';
   }
 }
