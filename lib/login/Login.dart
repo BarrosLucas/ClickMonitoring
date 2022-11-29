@@ -1,5 +1,6 @@
 import 'package:embarcados/appview/appview.dart';
 import 'package:embarcados/ui/home/Home.dart';
+import 'package:embarcados/ui/recover_pasword/recover.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -16,7 +17,7 @@ class Login extends StatelessWidget {
       height: 530,
       child: Stack(
         children: [
-          body(),
+          body(context),
           Align(
             alignment: Alignment.bottomLeft,
             child:
@@ -30,20 +31,20 @@ class Login extends StatelessWidget {
     ));
   }
 
-  Widget body(){
+  Widget body(BuildContext context){
     return Container(
         width: 800,
         height: 500,
         child: Row(
           children: [
-            getLeftSide(),
+            getLeftSide(context),
             getRightSide()
           ],
         ),
       );
   }
 
-  Widget getLeftSide(){
+  Widget getLeftSide(BuildContext context){
     return Container(
       width: 400,
       height: 500,
@@ -59,7 +60,7 @@ class Login extends StatelessWidget {
               children: [
                 getTitle(),
                 getInputDataField(),
-                getForgetPassOption()
+                getForgetPassOption(context)
               ],
             ),
           ),
@@ -207,11 +208,16 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget getForgetPassOption(){
+  Widget getForgetPassOption(BuildContext context){
     return Container(
       alignment: Alignment.bottomRight,
       margin: const EdgeInsets.only(right: 70,bottom: 80),
-      child: const Text("Esqueci minha senha", style: TextStyle(color: Colors.white),),
+      child: InkWell(
+        onTap: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Recover()));
+        },
+        child:  const Text("Esqueci minha senha", style: TextStyle(color: Colors.white),),
+      ),
     );
   }
 

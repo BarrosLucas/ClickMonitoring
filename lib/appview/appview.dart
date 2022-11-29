@@ -138,7 +138,7 @@ class _AppViewState extends State<AppView> {
                                   color: Color(0xFFAEA3BD)
                               ),
                               child: const TextField(
-                                decoration: InputDecoration.collapsed(hintText: "Origem"),
+                                decoration: InputDecoration.collapsed(hintText: "Destino"),
                                 style: TextStyle(color: Colors.black),
                               ),
                             ))
