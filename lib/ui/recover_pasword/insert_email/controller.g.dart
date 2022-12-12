@@ -41,6 +41,21 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$textAtom = Atom(name: 'ControllerBase.text', context: context);
+
+  @override
+  String get text {
+    _$textAtom.reportRead();
+    return super.text;
+  }
+
+  @override
+  set text(String value) {
+    _$textAtom.reportWrite(value, super.text, () {
+      super.text = value;
+    });
+  }
+
   late final _$ControllerBaseActionController =
       ActionController(name: 'ControllerBase', context: context);
 
@@ -59,7 +74,8 @@ mixin _$Controller on ControllerBase, Store {
   String toString() {
     return '''
 emailController: ${emailController},
-validEmail: ${validEmail}
+validEmail: ${validEmail},
+text: ${text}
     ''';
   }
 }
