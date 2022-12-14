@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:embarcados/models/order/OrderModel.dart';
 import 'package:embarcados/request/ApiConstants.dart';
 import 'package:http/http.dart' as http;
@@ -23,9 +25,9 @@ class OrderRequest{
     try{
       List<OrderModel> allOrders = await fetchOrders();
       for(var i in allOrders){
-        if(i.datetime_end == null){
-          return i;
-        }else if(i.datetime_end.isEmpty){
+        if(i.delivered==false){
+          print("Entrega em aberto:");
+          print(i.toJson());
           return i;
         }
       }
@@ -36,4 +38,56 @@ class OrderRequest{
     }
   }
 
+  Future<bool> newOrder(OrderModel orderModel) async {
+    print("Request: ${jsonEncode(orderModel.toJson())}");
+
+    final response = await http.post(
+      Uri.parse(ApiConstants.newOrder),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "description":orderModel.description,
+        "vehicle":"8eac3be0-fd5e-4ec9-90da-465ce14df7ce",
+        "business":orderModel.business,
+        "delivered":false,
+        "latitude_origin":"123",
+        "longitude_origin":"123",
+        "latitude_destiny":"456",
+        "longitude_destiny":"456"
+      }),
+    );
+
+    if(response.statusCode == 200){
+      print("New order success");
+      return true;
+    }
+    print("New order fail - Request error: ${response.body}");
+    print("New order fail - Request error: ${response.statusCode}");
+    return false;
+  }
+
+  Future<bool> endOrder(OrderModel orderModel) async {
+    print("Request: ${jsonEncode(orderModel.toJson())}");
+
+    print("URL: ${ApiConstants.endOrder.replaceAll("id", orderModel.id)}");
+
+    final response = await http.put(
+      Uri.parse(ApiConstants.endOrder.replaceAll("id", orderModel.id)),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, bool>{
+        "delivered":false
+      }),
+    );
+
+    if(response.statusCode == 200){
+      print("New order success");
+      return true;
+    }
+    print("New order fail - Request error: ${response.body}");
+    print("New order fail - Request error: ${response.statusCode}");
+    return false;
+  }
 }

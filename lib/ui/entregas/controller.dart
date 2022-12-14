@@ -29,7 +29,7 @@ abstract class ControllerBase with Store {
 
       startsList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateStart));
 
-      if(i.datetime_end.isNotEmpty){
+      if(i.delivered){
         finishesList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateFinish));
       }else{
         finishesList.add("EM TRÂNSITO");

@@ -44,6 +44,11 @@ abstract class ControllerBase with Store{
   }
 
   @action
+  endInfo(OrderModel orderModel){
+    (OrderRequest().endOrder(orderModel));
+  }
+
+  @action
   setDescription(String description){
     this.description = description;
   }

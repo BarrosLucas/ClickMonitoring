@@ -136,9 +136,10 @@ class _AppViewState extends State<AppView> {
                               decoration: const BoxDecoration(
                                   color: Color(0xFFAEA3BD)
                               ),
-                              child: const TextField(
-                                decoration: InputDecoration.collapsed(hintText: "Origem"),
-                                style: TextStyle(color: Colors.black),
+                              child: TextField(
+                                controller: controller.origin,
+                                decoration: const InputDecoration.collapsed(hintText: "Origem"),
+                                style: const TextStyle(color: Colors.black),
                               ),
                             ))
                           ],
@@ -161,7 +162,8 @@ class _AppViewState extends State<AppView> {
                               decoration: const BoxDecoration(
                                   color: Color(0xFFAEA3BD)
                               ),
-                              child: const TextField(
+                              child: TextField(
+                                controller: controller.destiny,
                                 decoration: InputDecoration.collapsed(hintText: "Destino"),
                                 style: TextStyle(color: Colors.black),
                               ),
@@ -178,14 +180,14 @@ class _AppViewState extends State<AppView> {
                     right: 0,
                     child: InkWell(
                       onTap: (){
+                        controller.newOrder();
                         controller.setPageVisibleNewDelivery(false);
-                        controller.setPage(0);
                       },
                       child: Container(
                           height: 60,
                           margin: const EdgeInsets.symmetric(horizontal: 240),
                           color: const Color(0xFFFB806F),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "INICIAR",
                               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),

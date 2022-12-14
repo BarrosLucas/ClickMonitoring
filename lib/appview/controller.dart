@@ -1,8 +1,10 @@
 import 'package:embarcados/models/businesses/BusinessModel.dart';
 import 'package:embarcados/models/measure/MeasureModel.dart';
 import 'package:embarcados/models/order/OrderModel.dart';
+import 'package:embarcados/request/business/BusinessRequest.dart';
 import 'package:embarcados/request/measures/MeasureRequest.dart';
 import 'package:embarcados/request/orders/OrderRequest.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'controller.g.dart';
 
@@ -16,7 +18,7 @@ abstract class ControllerBase with Store{
   BusinessModel ?user;
 
   @observable
-  List<MeasureModel> measures = [];
+  List<MeasureModel> ?measures = [];
 
   @observable
   OrderModel ?order;
@@ -33,9 +35,23 @@ abstract class ControllerBase with Store{
   @observable
   bool visibleDialog = false;
 
+  @observable
+  TextEditingController origin = TextEditingController();
+
+  @observable
+  TextEditingController destiny = TextEditingController();
+
   @action
   setVisibilityDialog(bool visibility){
     visibleDialog = visibility;
+  }
+
+  @action
+  newOrder() async{
+    await (BusinessRequest().getBusinessUser()).then((value) {
+      OrderModel orderModel = OrderModel("", "", "", "", "", "", "", "23", "De ${origin.text} para ${destiny.text}", value.id,false);
+      (OrderRequest().newOrder(orderModel));
+    });
   }
 
   @action
@@ -44,6 +60,10 @@ abstract class ControllerBase with Store{
       order = await(OrderRequest().openOrder());
       if(order == null){
         page = 2;
+      }else{
+        if(page == 2){
+          page = 7;
+        }
       }
     }catch(e){
       print(e.toString());
@@ -54,15 +74,19 @@ abstract class ControllerBase with Store{
   loadInfo() async{
     loadingInfo = true;
     try{
+      print("TENTANDO CAPTURAR");
       order = await (OrderRequest().openOrder());
+      print("Order capturada: \n$order");
       if(order != null){
         lastMeasure = await (MeasureRequest().getLastMeasureOpenOrder());
         measures = await (MeasureRequest().getMeasuresByOrder(order!.id));
 
         print("Ultima medicao: \n${lastMeasure!.toJson()}");
         print("Medicoes: ");
-        for(var i in measures){
-          print("${i.toJson()}");
+        if(measures != null){
+          for(var i in measures!){
+            print("${i.toJson()}");
+          }
         }
 
         page = 7;

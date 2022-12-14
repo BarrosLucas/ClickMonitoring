@@ -15,10 +15,11 @@ class OrderModel{
   final String vehicle_id;
   final String description;
   final String business;
+  final bool delivered;
 
   OrderModel(this.id, this.longitude_destiny, this.latitude_destiny,
       this.latitude_origin, this.longitude_origin, this.datetime_start,
-      this.datetime_end, this.vehicle_id, this.description, this.business);
+      this.datetime_end, this.vehicle_id, this.description, this.business,this.delivered);
 
   static List<OrderModel> parseOrders(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();

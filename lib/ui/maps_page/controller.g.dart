@@ -148,6 +148,17 @@ mixin _$Controller on ControllerBase, Store {
       ActionController(name: 'ControllerBase', context: context);
 
   @override
+  dynamic endInfo(OrderModel orderModel) {
+    final _$actionInfo = _$ControllerBaseActionController.startAction(
+        name: 'ControllerBase.endInfo');
+    try {
+      return super.endInfo(orderModel);
+    } finally {
+      _$ControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setDescription(String description) {
     final _$actionInfo = _$ControllerBaseActionController.startAction(
         name: 'ControllerBase.setDescription');

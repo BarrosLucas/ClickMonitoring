@@ -28,11 +28,11 @@ class MapsPageState extends State<MapsPage> {
     try{
       Timer.periodic(const Duration(seconds: 15), (Timer t) {
         setState(() {
+          controller.updateInfo(widget.controller.order!);
           if(marker != null){
             marker!.position = controller.currentCoordinates;
             print("Set position");
           }
-
         });
       });
     }catch(e){
@@ -216,14 +216,24 @@ class MapsPageState extends State<MapsPage> {
 
       marker!.onClick.listen((e) {
         setState(() {
-          controller.setVisible(true,
-              widget.controller.order!.description,
-              widget.controller.lastMeasure!.speed,
-              widget.controller.lastMeasure!.temperature,
-              widget.controller.lastMeasure!.umidity,
-              (widget.controller.lastMeasure!.temperature < 5)?
-                  "Saudável":"Alerta"
-          );
+          if(controller.lastMeasure!=null){
+            controller.setVisible(true,
+                widget.controller.order!.description,
+                controller.lastMeasure!.speed,
+                controller.lastMeasure!.temperature,
+                controller.lastMeasure!.umidity,
+                (controller.lastMeasure!.temperature < 5)?
+                "Saudável":"Alerta"
+            );
+          }else{
+            controller.setVisible(true,
+                widget.controller.order!.description,
+                0,
+                0,
+                0,
+                "---"
+            );
+          }
         });
       });
 
@@ -233,7 +243,7 @@ class MapsPageState extends State<MapsPage> {
 
     return Stack(
       children: [
-        HtmlElementView(viewType: htmlId),
+        AbsorbPointer(child: HtmlElementView(viewType: htmlId),),
         backgroundWindow(),
         windowTapMarker()
       ],
@@ -251,6 +261,7 @@ class MapsPageState extends State<MapsPage> {
           ),
         ),
         onTap: (){
+          print("UAI");
           controller.setVisible(false,"",0.0,0.0,0.0,"");
         },
       ),);
@@ -311,8 +322,11 @@ class MapsPageState extends State<MapsPage> {
                       ),
                       margin: const EdgeInsets.only(top: 20),
                       padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 10),
-                      child: const Text("ACOMPANHAR", style: TextStyle(color: Colors.white),),
+                      child: const Text("ENCERRAR", style: TextStyle(color: Colors.white),),
                     ),
+                    onTap: (){
+                      controller.endInfo(widget.controller.order!);
+                    },
                   )
                 ],
               )

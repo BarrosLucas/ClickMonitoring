@@ -43,13 +43,13 @@ mixin _$Controller on ControllerBase, Store {
       Atom(name: 'ControllerBase.measures', context: context);
 
   @override
-  List<MeasureModel> get measures {
+  List<MeasureModel>? get measures {
     _$measuresAtom.reportRead();
     return super.measures;
   }
 
   @override
-  set measures(List<MeasureModel> value) {
+  set measures(List<MeasureModel>? value) {
     _$measuresAtom.reportWrite(value, super.measures, () {
       super.measures = value;
     });
@@ -135,6 +135,46 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$originAtom =
+      Atom(name: 'ControllerBase.origin', context: context);
+
+  @override
+  TextEditingController get origin {
+    _$originAtom.reportRead();
+    return super.origin;
+  }
+
+  @override
+  set origin(TextEditingController value) {
+    _$originAtom.reportWrite(value, super.origin, () {
+      super.origin = value;
+    });
+  }
+
+  late final _$destinyAtom =
+      Atom(name: 'ControllerBase.destiny', context: context);
+
+  @override
+  TextEditingController get destiny {
+    _$destinyAtom.reportRead();
+    return super.destiny;
+  }
+
+  @override
+  set destiny(TextEditingController value) {
+    _$destinyAtom.reportWrite(value, super.destiny, () {
+      super.destiny = value;
+    });
+  }
+
+  late final _$newOrderAsyncAction =
+      AsyncAction('ControllerBase.newOrder', context: context);
+
+  @override
+  Future newOrder() {
+    return _$newOrderAsyncAction.run(() => super.newOrder());
+  }
+
   late final _$verifyOrderAsyncAction =
       AsyncAction('ControllerBase.verifyOrder', context: context);
 
@@ -197,7 +237,9 @@ order: ${order},
 lastMeasure: ${lastMeasure},
 newDeliveryPageVisible: ${newDeliveryPageVisible},
 loadingInfo: ${loadingInfo},
-visibleDialog: ${visibleDialog}
+visibleDialog: ${visibleDialog},
+origin: ${origin},
+destiny: ${destiny}
     ''';
   }
 }

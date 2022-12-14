@@ -17,6 +17,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
       json['vehicle_id'] as String,
       json['description'] as String,
       json['business'] as String,
+      json['delivered'] as bool,
     );
 
 Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
@@ -31,4 +32,5 @@ Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
       'vehicle_id': instance.vehicle_id,
       'description': instance.description,
       'business': instance.business,
+      'delivered': instance.delivered,
     };
