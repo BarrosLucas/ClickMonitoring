@@ -23,10 +23,10 @@ class OrderRequest{
     try{
       List<OrderModel> allOrders = await fetchOrders();
       for(var i in allOrders){
-        if(i.datetime_end != null){
-          if(i.datetime_end.isNotEmpty){
-            return i;
-          }
+        if(i.datetime_end == null){
+          return i;
+        }else if(i.datetime_end.isEmpty){
+          return i;
         }
       }
       return null;

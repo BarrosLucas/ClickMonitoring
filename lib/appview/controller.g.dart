@@ -119,6 +119,22 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$visibleDialogAtom =
+      Atom(name: 'ControllerBase.visibleDialog', context: context);
+
+  @override
+  bool get visibleDialog {
+    _$visibleDialogAtom.reportRead();
+    return super.visibleDialog;
+  }
+
+  @override
+  set visibleDialog(bool value) {
+    _$visibleDialogAtom.reportWrite(value, super.visibleDialog, () {
+      super.visibleDialog = value;
+    });
+  }
+
   late final _$verifyOrderAsyncAction =
       AsyncAction('ControllerBase.verifyOrder', context: context);
 
@@ -137,6 +153,17 @@ mixin _$Controller on ControllerBase, Store {
 
   late final _$ControllerBaseActionController =
       ActionController(name: 'ControllerBase', context: context);
+
+  @override
+  dynamic setVisibilityDialog(bool visibility) {
+    final _$actionInfo = _$ControllerBaseActionController.startAction(
+        name: 'ControllerBase.setVisibilityDialog');
+    try {
+      return super.setVisibilityDialog(visibility);
+    } finally {
+      _$ControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic setPage(int p) {
@@ -169,7 +196,8 @@ measures: ${measures},
 order: ${order},
 lastMeasure: ${lastMeasure},
 newDeliveryPageVisible: ${newDeliveryPageVisible},
-loadingInfo: ${loadingInfo}
+loadingInfo: ${loadingInfo},
+visibleDialog: ${visibleDialog}
     ''';
   }
 }

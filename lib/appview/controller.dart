@@ -30,6 +30,14 @@ abstract class ControllerBase with Store{
   @observable
   bool loadingInfo = false;
 
+  @observable
+  bool visibleDialog = false;
+
+  @action
+  setVisibilityDialog(bool visibility){
+    visibleDialog = visibility;
+  }
+
   @action
   verifyOrder() async{
     try{

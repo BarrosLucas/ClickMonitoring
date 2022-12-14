@@ -10,7 +10,7 @@ class BusinessRequest{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    if (response.statusCode == 202) {
+    if (response.statusCode == 200) {
       return BusinessModel.parseBusiness(response.body);
     } else {
       throw Exception('Unable to fetch products from the REST API');

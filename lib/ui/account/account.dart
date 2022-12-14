@@ -20,91 +20,102 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   final Controller controller = Controller();
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          children: [
-            Expanded(child:
-            Container(
-              width: MediaQuery.of(context).size.width*0.3,
-              decoration: const BoxDecoration(
-                  color: Color(0xff35185A)
-              ),
-              child: Stack(
-                children: [
-                  Column(
+    return FutureBuilder<bool>(
+        future: controller.loadInfoAccount(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if(snapshot.hasData){
+            return Row(
+              children: [
+                Column(
+                  children: [
+                    Expanded(child:
+                    Container(
+                        width: MediaQuery.of(context).size.width*0.3,
+                        decoration: const BoxDecoration(
+                            color: Color(0xff35185A)
+                        ),
+                        child: Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  NavigationVerticalItem(controller: controller,page: 0,title: "MEUS DADOS",),
+                                  NavigationVerticalItem(controller: controller,page: 1,title: "MINHA EMPRESA",),
+                                  NavigationVerticalItem(controller: controller,page: 2,title: "MEU PLANO",),
+                                  NavigationVerticalItem(controller: controller,page: 3,title: "SEGURANÇA",),
+                                  NavigationVerticalItem(controller: controller,page: 4,title: "SUPORTE",)
+                                ],
+                              ),
+                              const Positioned(
+                                  bottom: 10,
+                                  left: 30,
+                                  right: 30,
+                                  child: Text("1.0.0\nCopyright © 2022 – 2023 ClickMonitoring – Todos os direitos reservados.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 15.0, fontFamily: "Bungee",fontWeight: FontWeight.bold, color: Colors.white,),
+                                  )
+                              ),
+                            ]
+                        )
+                    ))
+                  ],
+                ),
+                Expanded(child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      NavigationVerticalItem(controller: controller,page: 0,title: "MEUS DADOS",),
-                      NavigationVerticalItem(controller: controller,page: 1,title: "MINHA EMPRESA",),
-                      NavigationVerticalItem(controller: controller,page: 2,title: "MEU PLANO",),
-                      NavigationVerticalItem(controller: controller,page: 3,title: "SEGURANÇA",),
-                      NavigationVerticalItem(controller: controller,page: 4,title: "SUPORTE",)
+                      const TitlePage(title: "MEUS DADOS",align: TitlePage.RIGHT,),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: CachedNetworkImage(
+                          imageUrl: controller.account!.url_logo,
+                          placeholder: (context, url) => const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Image.asset("assets/images/logo_client.png"),
+                        ),
+                      ),
+                      Observer(
+                        builder: (_){
+                          Widget widget = Container();
+                          switch(controller.page){
+                            case 0:
+                              widget = MyData(controller: controller,);
+                              break;
+                            case 1:
+                              widget = MyCompany(controller: controller,);
+                              break;
+                            case 2:
+                              widget = const MyPlan();
+                              break;
+                            case 3:
+                              widget = Safety(controller: controller,);
+                              break;
+                            case 4:
+                              widget = const Support();
+                              break;
+                          }
+                          return Expanded(child:
+                          Container(
+                            alignment: Alignment.topLeft,
+                            margin: const EdgeInsets.only(top: 40),
+                            child: widget,
+                          )
+                          );
+                        },
+                      )
                     ],
                   ),
-                  const Positioned(
-                    bottom: 10,
-                    left: 30,
-                    right: 30,
-                    child: Text("1.0.0\nCopyright © 2022 – 2023 ClickMonitoring – Todos os direitos reservados.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15.0, fontFamily: "Bungee",fontWeight: FontWeight.bold, color: Colors.white,),
-                  )
-                ),
-                ]
-              )
-            ))
-          ],
-        ),
-        Expanded(child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 60),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const TitlePage(title: "MEUS DADOS",align: TitlePage.RIGHT,),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: CachedNetworkImage(
-                  imageUrl: "http://via.placeholder.com/350x150",
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Image.asset("assets/images/logo_client.png"),
-                ),
-              ),
-              Observer(
-                builder: (_){
-                  Widget widget = Container();
-                  switch(controller.page){
-                    case 0:
-                      widget = const MyData();
-                      break;
-                    case 1:
-                      widget = const MyCompany();
-                      break;
-                    case 2:
-                      widget = const MyPlan();
-                      break;
-                    case 3:
-                      widget = const Safety();
-                      break;
-                    case 4:
-                      widget = const Support();
-                      break;
-                  }
-                  return Expanded(child:
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: const EdgeInsets.only(top: 40),
-                      child: widget,
-                    )
-                  );
-                },
-              )
-            ],
-          ),
-        ))
-      ],
-    );
+                ))
+              ],
+            );
+          }else{
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 }

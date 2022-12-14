@@ -18,6 +18,9 @@ abstract class ControllerBase with Store {
   
   @action 
   loadData()async{
+    startsList.clear();
+    finishesList.clear();
+    stopsList.clear();
     List<OrderModel> orders = await (OrderRequest().fetchOrders());
     for(var i in orders){
       DateTime tempDateStart = DateTime.parse(i.datetime_start);

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../widget/navigationbar.dart';
 import '../ui/maps_page/MapsPage.dart';
+import 'package:embarcados/widget/dialog.dart' as d;
 import 'package:embarcados/ui/delivery_route/Route.dart' as R;
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
@@ -31,29 +32,38 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     controller.loadInfo();
-    return Observer(
-      builder: (_){
-        return Scaffold(
-          backgroundColor: const Color(0xFFF5F5F5),
-          body: Stack(
-            children: [
-              Column(
-                children: [NavigationBarWeb(controller: controller,), Expanded(child: page())],
-              ),
-              Positioned(
-                  left: 0,
-                  bottom: 0,
-                  right: 0,
-                  top: 0,
-                  child: Visibility(
-                    visible: controller.newDeliveryPageVisible,
-                    child: newDeliverRegisterPage(),
-                  ))
-            ],
-          ),
-        );
-      },
-    );
+    return Observer(builder: (_){
+      return Scaffold(
+        body: Stack(
+          children: [
+            Observer(
+              builder: (_){
+                return Scaffold(
+                  backgroundColor: const Color(0xFFF5F5F5),
+                  body: Stack(
+                    children: [
+                      Column(
+                        children: [NavigationBarWeb(controller: controller,), Expanded(child: page())],
+                      ),
+                      Positioned(
+                          left: 0,
+                          bottom: 0,
+                          right: 0,
+                          top: 0,
+                          child: Visibility(
+                            visible: controller.newDeliveryPageVisible,
+                            child: newDeliverRegisterPage(),
+                          ))
+                    ],
+                  ),
+                );
+              },
+            ),
+            Visibility(child: d.Dialog(title: "Não há carros em rota",content: "Não há nenhum carro em rota no momento.",controller: controller,),visible: controller.visibleDialog,)
+          ],
+        ),
+      );
+    });
   }
 
   Widget page(){

@@ -35,7 +35,11 @@ class _NavigationBarWebState extends State<NavigationBarWeb> {
                   child: Image.asset( "assets/images/logo.png"),
                 ),
                 onTap: (){
-                  widget.controller.setPage(0);
+                  if(widget.controller.order != null){
+                    widget.controller.setPage(0);
+                  }else{
+                    widget.controller.setPage(2);
+                  }
                 },
               ),
 

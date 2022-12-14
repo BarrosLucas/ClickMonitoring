@@ -25,15 +25,19 @@ class MapsPageState extends State<MapsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer.periodic(const Duration(seconds: 15), (Timer t) {
-      setState(() {
-        if(marker != null){
-          marker!.position = controller.currentCoordinates;
-          print("Set position");
-        }
+    try{
+      Timer.periodic(const Duration(seconds: 15), (Timer t) {
+        setState(() {
+          if(marker != null){
+            marker!.position = controller.currentCoordinates;
+            print("Set position");
+          }
 
+        });
       });
-    });
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   @override

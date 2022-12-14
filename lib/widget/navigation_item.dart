@@ -13,7 +13,13 @@ class NavigationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        controller.setPage(page);
+        if(title == 'Acompanhar'){
+          if (controller.order != null) {
+            controller.setPage(page);
+          } else {
+            controller.setVisibilityDialog(true);
+          }
+        }
       },
       child: Container(
         alignment: (align)? Alignment.centerRight:Alignment.center,
