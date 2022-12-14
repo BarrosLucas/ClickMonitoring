@@ -25,10 +25,24 @@ class RouteState extends State<Route> {
 
   @override
   Widget build(BuildContext context) {
-    controller.load();
-    return Scaffold(
-        body:getMap()
+
+    return FutureBuilder<bool>(
+        future: controller.loadRoute(widget.appController.order!),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if(snapshot.hasData){
+            return Scaffold(
+                body:getMap()
+            );
+          }else{
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }
+
     );
+
+
   }
 
 
@@ -185,13 +199,17 @@ class RouteState extends State<Route> {
 
       final map = gMap.GMap(elem, mapOptions);
 
-      for(var i = 0; i < controller.stops.length; i++){
-        gMap.Marker(gMap.MarkerOptions()
-          ..position = controller.stops.elementAt(i)
-          ..map = map
-          ..title = 'Hello World!'
-        );
-      }
+      gMap.Marker(gMap.MarkerOptions()
+        ..position = controller.coordinates.first
+        ..map = map
+        ..title = 'Saída'
+      );
+
+      gMap.Marker(gMap.MarkerOptions()
+        ..position = controller.coordinates.last
+        ..map = map
+        ..title = 'Chegada!'
+      );
 
       final polyOptions = PolylineOptions()
         ..strokeColor = '#76B2EB'
@@ -225,7 +243,7 @@ class RouteState extends State<Route> {
     return Observer(builder: (_){
       return Container(
           width: 350,
-          height: 260,
+          height: 200,
           padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 20),
           decoration: const BoxDecoration(
               color: Color(0xFFA88C8C),
@@ -239,32 +257,14 @@ class RouteState extends State<Route> {
               Text(controller.description,style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
               Row(
                 children: [
-                  const Text("Distância Percorrida: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                  Text("${controller.distance}km",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                ],
-              ),
-              Row(
-                children: [
                   const Text("Duração: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                   Text("${controller.duration}",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                 ],
               ),
               Row(
                 children: [
-                  const Text("Velocidade Média: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                  Text("${controller.speed}km/h",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                ],
-              ),
-              Row(
-                children: [
                   const Text("Temperatura Média da Carga: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                   Text("${controller.temperature}° C",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                ],
-              ),
-              Row(
-                children: [
-                  const Text("Umidade: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                  Text("${controller.humidity}%",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                 ],
               ),
               Row(

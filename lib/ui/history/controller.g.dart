@@ -56,18 +56,28 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$ControllerBaseActionController =
-      ActionController(name: 'ControllerBase', context: context);
+  late final _$measuresAtom =
+      Atom(name: 'ControllerBase.measures', context: context);
 
   @override
-  dynamic loadData() {
-    final _$actionInfo = _$ControllerBaseActionController.startAction(
-        name: 'ControllerBase.loadData');
-    try {
-      return super.loadData();
-    } finally {
-      _$ControllerBaseActionController.endAction(_$actionInfo);
-    }
+  ObservableList<MeasureModel> get measures {
+    _$measuresAtom.reportRead();
+    return super.measures;
+  }
+
+  @override
+  set measures(ObservableList<MeasureModel> value) {
+    _$measuresAtom.reportWrite(value, super.measures, () {
+      super.measures = value;
+    });
+  }
+
+  late final _$loadDataHistoryAsyncAction =
+      AsyncAction('ControllerBase.loadDataHistory', context: context);
+
+  @override
+  Future<bool> loadDataHistory(OrderModel order) {
+    return _$loadDataHistoryAsyncAction.run(() => super.loadDataHistory(order));
   }
 
   @override
@@ -75,7 +85,8 @@ mixin _$Controller on ControllerBase, Store {
     return '''
 times: ${times},
 health: ${health},
-temperature: ${temperature}
+temperature: ${temperature},
+measures: ${measures}
     ''';
   }
 }

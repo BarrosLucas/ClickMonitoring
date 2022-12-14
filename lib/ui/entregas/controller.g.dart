@@ -57,18 +57,12 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$ControllerBaseActionController =
-      ActionController(name: 'ControllerBase', context: context);
+  late final _$loadDataAsyncAction =
+      AsyncAction('ControllerBase.loadData', context: context);
 
   @override
-  dynamic loadData() {
-    final _$actionInfo = _$ControllerBaseActionController.startAction(
-        name: 'ControllerBase.loadData');
-    try {
-      return super.loadData();
-    } finally {
-      _$ControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future loadData() {
+    return _$loadDataAsyncAction.run(() => super.loadData());
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:embarcados/models/order/OrderModel.dart';
 import 'package:embarcados/ui/history/controller.dart';
 import 'package:embarcados/widget/chart.dart';
 import 'package:embarcados/widget/column_table_data.dart';
@@ -6,7 +7,8 @@ import 'package:embarcados/widget/title.dart';
 import 'package:flutter/material.dart';
 
 class History extends StatefulWidget {
-  const History({Key? key}) : super(key: key);
+  final OrderModel orderModel;
+  const History({Key? key, required this.orderModel}) : super(key: key);
 
   @override
   State<History> createState() => _HistoryState();
@@ -17,11 +19,18 @@ class _HistoryState extends State<History> {
 
   @override
   Widget build(BuildContext context) {
-    controller.loadData();
-    return Stack(
-      children: [
-        body(context),
-      ],
+    return FutureBuilder<bool>(
+        future: controller.loadDataHistory(widget.orderModel),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if(snapshot.hasData){
+            return body(context);
+          }else{
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }
+
     );
   }
 
@@ -43,7 +52,8 @@ class _HistoryState extends State<History> {
             child: Column(
               children: [
                 getChart(),
-                getTable()
+                getTable(),
+                Container(height: 20,)
               ],
             ),
           ),
@@ -57,10 +67,10 @@ class _HistoryState extends State<History> {
     return Container(
       color: const Color(0xfff0f0f0),
       padding: const EdgeInsets.all(15),
-      child: const ChartContainer(
+      child: ChartContainer(
         title: 'Line Chart',
         color: Colors.white,
-        chart: LineChartContent(),
+        chart: LineChartContent(measures: controller.measures,),
       ),
     );
   }

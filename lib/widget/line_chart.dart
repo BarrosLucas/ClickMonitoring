@@ -1,9 +1,14 @@
+import 'package:embarcados/models/measure/MeasureModel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'line_chart_data.dart';
 
 class LineChartContent extends StatelessWidget {
-  const LineChartContent({super.key});
+
+  final List<MeasureModel> measures;
+
+  const LineChartContent({super.key, required this.measures});
 
 
   @override
@@ -18,7 +23,7 @@ class LineChartContent extends StatelessWidget {
             right: BorderSide(width: 0, color: Colors.white)
           )
         ),
-        lineBarsData: lineChartBarData,
+        lineBarsData: generateSpots(),
         titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
@@ -58,48 +63,27 @@ class LineChartContent extends StatelessWidget {
     );
   }
 
+  List<LineChartBarData> generateSpots(){
+    List<FlSpot> spots = [];
+    for(var i = 0; i < measures.length; i++){
+      spots.add(FlSpot(i+1, measures.elementAt(i).temperature));
+    }
+    return [
+      LineChartBarData(
+        color: lineColor,
+        isCurved: false,
+        spots: spots
+    )
+    ];
+  }
+
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     String text;
-    switch (value.toInt()) {
-      case 0:
-        text = '01/01/2022 01:01:01';
-        break;
-      case 1:
-        text = '01/01/2022 01:02:01';
-        break;
-      case 2:
-        text = '01/01/2022 01:03:01';
-        break;
-      case 3:
-        text = '01/01/2022 01:04:01';
-        break;
-      case 4:
-        text = '01/01/2022 01:05:01';
-        break;
-      case 5:
-        text = '01/01/2022 01:06:01';
-        break;
-      case 6:
-        text = '01/01/2022 01:07:01';
-        break;
-      case 7:
-        text = '01/01/2022 01:08:01';
-        break;
-      case 8:
-        text = '01/01/2022 01:09:01';
-        break;
-      case 9:
-        text = '01/01/2022 01:10:01';
-        break;
-      case 10:
-        text = '01/01/2022 01:11:01';
-        break;
-      case 11:
-        text = '01/01/2022 01:12:01';
-        break;
-      default:
-        return Container();
+    if(value.toInt() > measures.length){
+      print("Excedeu: $value");
+      return Container();
     }
+    text = DateFormat("dd/MM/yyyy hh:mm:ss").format((measures.elementAt(value.toInt()-1)).created);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,

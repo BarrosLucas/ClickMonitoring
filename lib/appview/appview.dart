@@ -70,7 +70,7 @@ class _AppViewState extends State<AppView> {
             case 3:
               return Entregas(appViewController: controller,);
             case 4:
-              return History();
+              return History(orderModel: controller.order!,);
             case 5:
               return R.Route(appController: controller,);
             case 6:

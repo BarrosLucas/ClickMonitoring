@@ -102,10 +102,6 @@ class _EntregasState extends State<Entregas> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: ColumnDataTable(titleColumn: "QUANT. DE PARADAS", data: stops),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ColumnDataTable(titleColumn: "HISTÓRICO DE TEMP.", widgets: icons),
             ),
           ],

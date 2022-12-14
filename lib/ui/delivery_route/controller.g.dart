@@ -72,22 +72,6 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$distanceAtom =
-      Atom(name: 'ControllerBase.distance', context: context);
-
-  @override
-  double get distance {
-    _$distanceAtom.reportRead();
-    return super.distance;
-  }
-
-  @override
-  set distance(double value) {
-    _$distanceAtom.reportWrite(value, super.distance, () {
-      super.distance = value;
-    });
-  }
-
   late final _$durationAtom =
       Atom(name: 'ControllerBase.duration', context: context);
 
@@ -104,21 +88,6 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$speedAtom = Atom(name: 'ControllerBase.speed', context: context);
-
-  @override
-  double get speed {
-    _$speedAtom.reportRead();
-    return super.speed;
-  }
-
-  @override
-  set speed(double value) {
-    _$speedAtom.reportWrite(value, super.speed, () {
-      super.speed = value;
-    });
-  }
-
   late final _$temperatureAtom =
       Atom(name: 'ControllerBase.temperature', context: context);
 
@@ -132,22 +101,6 @@ mixin _$Controller on ControllerBase, Store {
   set temperature(double value) {
     _$temperatureAtom.reportWrite(value, super.temperature, () {
       super.temperature = value;
-    });
-  }
-
-  late final _$humidityAtom =
-      Atom(name: 'ControllerBase.humidity', context: context);
-
-  @override
-  double get humidity {
-    _$humidityAtom.reportRead();
-    return super.humidity;
-  }
-
-  @override
-  set humidity(double value) {
-    _$humidityAtom.reportWrite(value, super.humidity, () {
-      super.humidity = value;
     });
   }
 
@@ -183,18 +136,28 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$ControllerBaseActionController =
-      ActionController(name: 'ControllerBase', context: context);
+  late final _$measuresAtom =
+      Atom(name: 'ControllerBase.measures', context: context);
 
   @override
-  dynamic load() {
-    final _$actionInfo = _$ControllerBaseActionController.startAction(
-        name: 'ControllerBase.load');
-    try {
-      return super.load();
-    } finally {
-      _$ControllerBaseActionController.endAction(_$actionInfo);
-    }
+  ObservableList<MeasureModel> get measures {
+    _$measuresAtom.reportRead();
+    return super.measures;
+  }
+
+  @override
+  set measures(ObservableList<MeasureModel> value) {
+    _$measuresAtom.reportWrite(value, super.measures, () {
+      super.measures = value;
+    });
+  }
+
+  late final _$loadRouteAsyncAction =
+      AsyncAction('ControllerBase.loadRoute', context: context);
+
+  @override
+  Future<bool> loadRoute(OrderModel order) {
+    return _$loadRouteAsyncAction.run(() => super.loadRoute(order));
   }
 
   @override
@@ -204,13 +167,11 @@ coordinates: ${coordinates},
 stops: ${stops},
 center: ${center},
 description: ${description},
-distance: ${distance},
 duration: ${duration},
-speed: ${speed},
 temperature: ${temperature},
-humidity: ${humidity},
 driver: ${driver},
-status: ${status}
+status: ${status},
+measures: ${measures}
     ''';
   }
 }

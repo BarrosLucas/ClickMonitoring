@@ -1,3 +1,6 @@
+import 'package:embarcados/models/order/OrderModel.dart';
+import 'package:embarcados/request/orders/OrderRequest.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 part 'controller.g.dart';
 
@@ -14,20 +17,20 @@ abstract class ControllerBase with Store {
   var stopsList = ObservableList<int>();
   
   @action 
-  loadData(){
-    startsList.add("01/10/2020 01:01:00");
-    startsList.add("03/10/2020 01:01:00");
-    startsList.add("05/10/2020 01:01:00");
-    startsList.add("06/10/2020 01:01:00");
-    
-    finishesList.add("02/10/2020 01:01:00");
-    finishesList.add("EM TRÂNSITO");
-    finishesList.add("06/10/2020 01:01:00");
-    finishesList.add("06/10/2020 02:01:00");
+  loadData()async{
+    List<OrderModel> orders = await (OrderRequest().fetchOrders());
+    for(var i in orders){
+      DateTime tempDateStart = DateTime.parse(i.datetime_start);
+      DateTime tempDateFinish = DateTime.parse(i.datetime_end);
 
-    stopsList.add(15);
-    stopsList.add(13);
-    stopsList.add(10);
-    stopsList.add(2);
+
+      startsList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateStart));
+
+      if(i.datetime_end.isNotEmpty){
+        finishesList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateFinish));
+      }else{
+        finishesList.add("EM TRÂNSITO");
+      }
+    }
   }
 }
