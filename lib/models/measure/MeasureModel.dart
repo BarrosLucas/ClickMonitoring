@@ -10,8 +10,8 @@ class MeasureModel{
   final String latitude;
   final String longitude;
   final String timestamp;
-  final String updated;
-  final String created;
+  final DateTime updated;
+  final DateTime created;
   final double temperature;
   final double speed;
   final double umidity;

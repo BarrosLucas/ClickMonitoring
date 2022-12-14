@@ -1,14 +1,27 @@
 import 'package:embarcados/appview/appview.dart';
+import 'package:embarcados/login/login_controller.dart';
 import 'package:embarcados/ui/home/Home.dart';
 import 'package:embarcados/ui/recover_pasword/recover.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  LoginController controller = LoginController();
+
+  @override
   Widget build(BuildContext context) {
-    return content(context);
+    return Observer(
+      builder: (_){
+        return content(context);
+      }
+    );
   }
 
   Widget content(BuildContext context){
@@ -33,15 +46,15 @@ class Login extends StatelessWidget {
 
   Widget body(BuildContext context){
     return Container(
-        width: 800,
-        height: 500,
-        child: Row(
-          children: [
-            getLeftSide(context),
-            getRightSide()
-          ],
-        ),
-      );
+      width: 800,
+      height: 500,
+      child: Row(
+        children: [
+          getLeftSide(context),
+          getRightSide()
+        ],
+      ),
+    );
   }
 
   Widget getLeftSide(BuildContext context){
@@ -78,46 +91,53 @@ class Login extends StatelessWidget {
         ),
         width: 320,
         height: 60,
-        child: const Text("LOGIN", textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 20),),
+        child: (controller.loading)? CircularProgressIndicator():
+        const Text("LOGIN", textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 20),),
       ),
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppView()));
+      onTap: () async{
+        await controller.doLogin();
+        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppView()));
+        if(controller.success){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppView()));
+        }else{
+          //Dialog de erro de senha ou de conexão
+        }
       },
     );
   }
 
   Widget getRightSide(){
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      width: 370,
-      height: 500,
-      child: Stack(
-        children: [
-          Center(
-            child: Image.asset("assets/images/observable_image.png"),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              width: 150,
-              height: 90,
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        width: 370,
+        height: 500,
+        child: Stack(
+          children: [
+            Center(
+              child: Image.asset("assets/images/observable_image.png"),
+            ),
+            Align(
               alignment: Alignment.topRight,
-              margin: const EdgeInsets.all(0),
-              child: Image.asset("assets/images/logo.png"),
+              child: Container(
+                width: 150,
+                height: 90,
+                alignment: Alignment.topRight,
+                margin: const EdgeInsets.all(0),
+                child: Image.asset("assets/images/logo.png"),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 30),
-              child: const Text("TORNANDO O TRANSPORTE DE\nSUA CARGA MAIS SEGURO!", textAlign: TextAlign.center, style: TextStyle(fontFamily: "Bungee", fontSize: 18),),
-            ),
-          )
-        ],
-      )
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 30),
+                child: const Text("TORNANDO O TRANSPORTE DE\nSUA CARGA MAIS SEGURO!", textAlign: TextAlign.center, style: TextStyle(fontFamily: "Bungee", fontSize: 18),),
+              ),
+            )
+          ],
+        )
     );
   }
 
@@ -161,10 +181,11 @@ class Login extends StatelessWidget {
                   padding: EdgeInsets.only(left: 20),
                   width: 250,
                   height: 45,
-                  child: const Center(
+                  child: Center(
                     child: TextField(
-                      decoration: InputDecoration.collapsed(hintText: "Usuário"),
-                      style: TextStyle(color: Colors.black),
+                      controller: controller.userInputController,
+                      decoration: const InputDecoration.collapsed(hintText: "Usuário"),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   )
               )
@@ -192,10 +213,11 @@ class Login extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 20),
                     width: 250,
                     height: 45,
-                    child: const Center(
+                    child: Center(
                       child: TextField(
-                        decoration: InputDecoration.collapsed(hintText: "Senha"),
-                        style: TextStyle(color: Colors.black),
+                        controller: controller.passInputController,
+                        decoration: const InputDecoration.collapsed(hintText: "Senha"),
+                        style: const TextStyle(color: Colors.black),
                         obscureText: true,
                       ),
                     )
@@ -220,6 +242,5 @@ class Login extends StatelessWidget {
       ),
     );
   }
-
-
 }
+

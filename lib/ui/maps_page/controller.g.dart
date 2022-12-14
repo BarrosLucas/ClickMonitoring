@@ -104,6 +104,46 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$currentCoordinatesAtom =
+      Atom(name: 'ControllerBase.currentCoordinates', context: context);
+
+  @override
+  gMap.LatLng get currentCoordinates {
+    _$currentCoordinatesAtom.reportRead();
+    return super.currentCoordinates;
+  }
+
+  @override
+  set currentCoordinates(gMap.LatLng value) {
+    _$currentCoordinatesAtom.reportWrite(value, super.currentCoordinates, () {
+      super.currentCoordinates = value;
+    });
+  }
+
+  late final _$lastMeasureAtom =
+      Atom(name: 'ControllerBase.lastMeasure', context: context);
+
+  @override
+  MeasureModel? get lastMeasure {
+    _$lastMeasureAtom.reportRead();
+    return super.lastMeasure;
+  }
+
+  @override
+  set lastMeasure(MeasureModel? value) {
+    _$lastMeasureAtom.reportWrite(value, super.lastMeasure, () {
+      super.lastMeasure = value;
+    });
+  }
+
+  late final _$updateInfoAsyncAction =
+      AsyncAction('ControllerBase.updateInfo', context: context);
+
+  @override
+  Future updateInfo(OrderModel order) {
+    return _$updateInfoAsyncAction.run(() => super.updateInfo(order));
+  }
+
   late final _$ControllerBaseActionController =
       ActionController(name: 'ControllerBase', context: context);
 
@@ -183,7 +223,9 @@ description: ${description},
 speed: ${speed},
 temperature: ${temperature},
 humidity: ${humidity},
-status: ${status}
+status: ${status},
+currentCoordinates: ${currentCoordinates},
+lastMeasure: ${lastMeasure}
     ''';
   }
 }

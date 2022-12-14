@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:js_util';
+import 'package:embarcados/models/measure/MeasureModel.dart';
+
 import 'controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,17 +22,52 @@ class Acompanhar extends StatefulWidget {
 }
 
 class AcompanharState extends State<Acompanhar> {
-
+  gMap.Marker ?now;
   late gMap.Polyline poly;
-  Controller controller = Controller();
+  late Controller controller;
+  late gMap.MapOptions mapOptions;
+
+  @override
+  void initState(){
+    super.initState();
+    controller = Controller();
+    Timer.periodic(const Duration(seconds: 15), (Timer t) {
+      controller.update(widget.appController.order!);
+      setState(() {
+        if(now != null){
+          now!.position = controller.coordinates.last;
+          try{
+            poly.path!
+                .push(controller.coordinates.last);
+            mapOptions.center = controller.center;
+          }catch(e){
+            print(e.toString());
+          }
+          print("Set position");
+        }
+
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.load();
-    return getMap();
+    return FutureBuilder<bool>(
+        future: controller.loadData(widget.appController.order!),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if(snapshot.hasData){
+            return getMap();
+          }else{
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }
+
+    );
   }
 
-  Widget getMap(){
+  Widget getMap() {
     String htmlId = "8";
 
     //a ignore: undefined_prefixed_name
@@ -165,7 +203,7 @@ class AcompanharState extends State<Acompanhar> {
       ];
 
 
-      final mapOptions = gMap.MapOptions()
+      mapOptions = gMap.MapOptions()
         ..streetViewControl = false
         ..zoomControl = false
         ..fullscreenControl = false
@@ -196,7 +234,7 @@ class AcompanharState extends State<Acompanhar> {
         ..title = 'Início'
       );
 
-      gMap.Marker(gMap.MarkerOptions()
+      now = gMap.Marker(gMap.MarkerOptions()
         ..position = controller.coordinates.last
         ..map = map
         ..icon = _iconNow

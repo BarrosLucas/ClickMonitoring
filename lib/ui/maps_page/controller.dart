@@ -1,3 +1,8 @@
+import 'package:embarcados/models/measure/MeasureModel.dart';
+import 'package:embarcados/models/order/OrderModel.dart';
+import 'package:embarcados/request/measures/MeasureRequest.dart';
+import 'package:embarcados/request/orders/OrderRequest.dart';
+import 'package:google_maps/google_maps.dart' as gMap;
 import 'package:mobx/mobx.dart';
 part 'controller.g.dart';
 
@@ -21,20 +26,36 @@ abstract class ControllerBase with Store{
 
   @observable
   String status = "Ativo";
+  
+  @observable
+  gMap.LatLng currentCoordinates = gMap.LatLng(-7.160975673332396, -34.817297882735765);
+
+  @observable
+  MeasureModel ?lastMeasure;
+
+  @action
+  updateInfo(OrderModel order) async{
+    try {
+      lastMeasure = await (MeasureRequest().getLastMeasureOpenOrder());
+      currentCoordinates = gMap.LatLng(double.parse(lastMeasure!.latitude), double.parse(lastMeasure!.longitude));
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @action
   setDescription(String description){
-    this.description = "Entrega de carne para o mercadinho";
+    this.description = description;
   }
 
   @action
   setSpeed(double speed){
-    this.speed = 10.0;
+    this.speed = speed;
   }
 
   @action
   setTemperature(double temperature){
-    this.temperature = -20;
+    this.temperature = temperature;
   }
 
   @action

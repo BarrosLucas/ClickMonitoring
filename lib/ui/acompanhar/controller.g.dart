@@ -9,6 +9,22 @@ part of 'controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$Controller on ControllerBase, Store {
+  late final _$measuresAtom =
+      Atom(name: 'ControllerBase.measures', context: context);
+
+  @override
+  ObservableList<MeasureModel>? get measures {
+    _$measuresAtom.reportRead();
+    return super.measures;
+  }
+
+  @override
+  set measures(ObservableList<MeasureModel>? value) {
+    _$measuresAtom.reportWrite(value, super.measures, () {
+      super.measures = value;
+    });
+  }
+
   late final _$coordinatesAtom =
       Atom(name: 'ControllerBase.coordinates', context: context);
 
@@ -136,23 +152,26 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
-  late final _$ControllerBaseActionController =
-      ActionController(name: 'ControllerBase', context: context);
+  late final _$updateAsyncAction =
+      AsyncAction('ControllerBase.update', context: context);
 
   @override
-  dynamic load() {
-    final _$actionInfo = _$ControllerBaseActionController.startAction(
-        name: 'ControllerBase.load');
-    try {
-      return super.load();
-    } finally {
-      _$ControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future update(OrderModel order) {
+    return _$updateAsyncAction.run(() => super.update(order));
+  }
+
+  late final _$loadDataAsyncAction =
+      AsyncAction('ControllerBase.loadData', context: context);
+
+  @override
+  Future<bool> loadData(OrderModel order) {
+    return _$loadDataAsyncAction.run(() => super.loadData(order));
   }
 
   @override
   String toString() {
     return '''
+measures: ${measures},
 coordinates: ${coordinates},
 center: ${center},
 description: ${description},

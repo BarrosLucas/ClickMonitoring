@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:embarcados/appview/controller.dart';
 import 'package:embarcados/ui/account/account.dart';
 import 'package:embarcados/ui/acompanhar/Acompanhar.dart';
@@ -20,7 +22,15 @@ class _AppViewState extends State<AppView> {
   final Controller controller = Controller();
 
   @override
+  void initState(){
+    Timer.periodic(const Duration(seconds: 15), (Timer t) {
+      controller.verifyOrder();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    controller.loadInfo();
     return Observer(
       builder: (_){
         return Scaffold(
@@ -49,21 +59,25 @@ class _AppViewState extends State<AppView> {
   Widget page(){
     return Observer(
       builder: (_){
-        switch(controller.page){
-          case 2:
-            return Home(appController: controller,);
-          case 1:
-            return Acompanhar(appController: controller);
-          case 3:
-            return Entregas(appViewController: controller,);
-          case 4:
-            return History();
-          case 5:
-            return R.Route(appController: controller,);
-          case 6:
-            return Account();
+        if(controller.loadingInfo){
+          return const Center(child: CircularProgressIndicator(),);
+        }else {
+          switch (controller.page) {
+            case 2:
+              return Home(appController: controller,);
+            case 1:
+              return Acompanhar(appController: controller);
+            case 3:
+              return Entregas(appViewController: controller,);
+            case 4:
+              return History();
+            case 5:
+              return R.Route(appController: controller,);
+            case 6:
+              return Account();
+          }
+          return MapsPage(controller: controller,);
         }
-        return MapsPage();
       },
     );
   }

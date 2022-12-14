@@ -24,6 +24,68 @@ mixin _$Controller on ControllerBase, Store {
     });
   }
 
+  late final _$userAtom = Atom(name: 'ControllerBase.user', context: context);
+
+  @override
+  BusinessModel? get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(BusinessModel? value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
+  late final _$measuresAtom =
+      Atom(name: 'ControllerBase.measures', context: context);
+
+  @override
+  List<MeasureModel> get measures {
+    _$measuresAtom.reportRead();
+    return super.measures;
+  }
+
+  @override
+  set measures(List<MeasureModel> value) {
+    _$measuresAtom.reportWrite(value, super.measures, () {
+      super.measures = value;
+    });
+  }
+
+  late final _$orderAtom = Atom(name: 'ControllerBase.order', context: context);
+
+  @override
+  OrderModel? get order {
+    _$orderAtom.reportRead();
+    return super.order;
+  }
+
+  @override
+  set order(OrderModel? value) {
+    _$orderAtom.reportWrite(value, super.order, () {
+      super.order = value;
+    });
+  }
+
+  late final _$lastMeasureAtom =
+      Atom(name: 'ControllerBase.lastMeasure', context: context);
+
+  @override
+  MeasureModel? get lastMeasure {
+    _$lastMeasureAtom.reportRead();
+    return super.lastMeasure;
+  }
+
+  @override
+  set lastMeasure(MeasureModel? value) {
+    _$lastMeasureAtom.reportWrite(value, super.lastMeasure, () {
+      super.lastMeasure = value;
+    });
+  }
+
   late final _$newDeliveryPageVisibleAtom =
       Atom(name: 'ControllerBase.newDeliveryPageVisible', context: context);
 
@@ -39,6 +101,38 @@ mixin _$Controller on ControllerBase, Store {
         .reportWrite(value, super.newDeliveryPageVisible, () {
       super.newDeliveryPageVisible = value;
     });
+  }
+
+  late final _$loadingInfoAtom =
+      Atom(name: 'ControllerBase.loadingInfo', context: context);
+
+  @override
+  bool get loadingInfo {
+    _$loadingInfoAtom.reportRead();
+    return super.loadingInfo;
+  }
+
+  @override
+  set loadingInfo(bool value) {
+    _$loadingInfoAtom.reportWrite(value, super.loadingInfo, () {
+      super.loadingInfo = value;
+    });
+  }
+
+  late final _$verifyOrderAsyncAction =
+      AsyncAction('ControllerBase.verifyOrder', context: context);
+
+  @override
+  Future verifyOrder() {
+    return _$verifyOrderAsyncAction.run(() => super.verifyOrder());
+  }
+
+  late final _$loadInfoAsyncAction =
+      AsyncAction('ControllerBase.loadInfo', context: context);
+
+  @override
+  Future loadInfo() {
+    return _$loadInfoAsyncAction.run(() => super.loadInfo());
   }
 
   late final _$ControllerBaseActionController =
@@ -70,7 +164,12 @@ mixin _$Controller on ControllerBase, Store {
   String toString() {
     return '''
 page: ${page},
-newDeliveryPageVisible: ${newDeliveryPageVisible}
+user: ${user},
+measures: ${measures},
+order: ${order},
+lastMeasure: ${lastMeasure},
+newDeliveryPageVisible: ${newDeliveryPageVisible},
+loadingInfo: ${loadingInfo}
     ''';
   }
 }

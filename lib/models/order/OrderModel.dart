@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 part 'OrderModel.g.dart';
 
@@ -17,6 +19,11 @@ class OrderModel{
   OrderModel(this.id, this.longitude_destiny, this.latitude_destiny,
       this.latitude_origin, this.longitude_origin, this.datetime_start,
       this.datetime_end, this.vehicle_id, this.description, this.business);
+
+  static List<OrderModel> parseOrders(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<OrderModel>((json) => OrderModel.fromJson(json)).toList();
+  }
 
   factory OrderModel.fromJson(Map<String,dynamic> data) => _$OrderModelFromJson(data);
 

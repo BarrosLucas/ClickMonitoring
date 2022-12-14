@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:js_util';
 import 'dart:ui' as ui;
+import 'package:embarcados/appview/controller.dart' as appC;
 import 'package:embarcados/ui/maps_page/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,19 +11,39 @@ import 'package:google_maps/google_maps.dart';
 
 
 class MapsPage extends StatefulWidget {
+  appC.Controller controller;
+  MapsPage({super.key, required this.controller});
+
   @override
   State<MapsPage> createState() => MapsPageState();
 }
 
 class MapsPageState extends State<MapsPage> {
   Controller controller = Controller();
+  gMap.Marker ?marker;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer.periodic(const Duration(seconds: 15), (Timer t) {
+      setState(() {
+        if(marker != null){
+          marker!.position = controller.currentCoordinates;
+          print("Set position");
+        }
+
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    return getMap();
-
-
+    controller.updateInfo(widget.controller.order!);
+    return Observer(
+      builder: (_){
+        return getMap();
+      },
+    );
   }
 
 
@@ -160,15 +182,13 @@ class MapsPageState extends State<MapsPage> {
           ],
       ];
 
-      final myLatlng = gMap.LatLng(-7.1637244368737445, -34.827505162559135);
-
-      final mapOptions = gMap.MapOptions()
+      var mapOptions = gMap.MapOptions()
         ..streetViewControl = false
         ..zoomControl = false
         ..fullscreenControl = false
         ..mapTypeControl = false
         ..zoom = 15
-        ..center = gMap.LatLng(-7.1637244368737445, -34.827505162559135)
+        ..center = controller.currentCoordinates
         ..styles = featureOps;
 
       final elem = DivElement()
@@ -183,16 +203,23 @@ class MapsPageState extends State<MapsPage> {
         ..scaledSize = gMap.Size(40, 60)
         ..url = "assets/images/marker.png";
 
-      final marker = gMap.Marker(gMap.MarkerOptions()
-        ..position = myLatlng
+      marker = gMap.Marker(gMap.MarkerOptions()
+        ..position = controller.currentCoordinates
         ..map = map
         ..icon = _icon
         ..title = 'Hello World!'
       );
 
-      marker.onClick.listen((e) {
+      marker!.onClick.listen((e) {
         setState(() {
-          controller.setVisible(true,"Entrega de carne para o mercadinho",10.0,-30.0,100,"Saudável");
+          controller.setVisible(true,
+              widget.controller.order!.description,
+              widget.controller.lastMeasure!.speed,
+              widget.controller.lastMeasure!.temperature,
+              widget.controller.lastMeasure!.umidity,
+              (widget.controller.lastMeasure!.temperature < 5)?
+                  "Saudável":"Alerta"
+          );
         });
       });
 
