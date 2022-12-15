@@ -48,7 +48,7 @@ class OrderRequest{
       },
       body: jsonEncode(<String, dynamic>{
         "description":orderModel.description,
-        "vehicle":"8eac3be0-fd5e-4ec9-90da-465ce14df7ce",
+        "vehicle":1,
         "business":orderModel.business,
         "delivered":false,
         "latitude_origin":"123",
@@ -70,15 +70,15 @@ class OrderRequest{
   Future<bool> endOrder(OrderModel orderModel) async {
     print("Request: ${jsonEncode(orderModel.toJson())}");
 
-    print("URL: ${ApiConstants.endOrder.replaceAll("id", orderModel.id)}");
+    print("URL: ${ApiConstants.endOrder.replaceAll("id", "${orderModel.id}")}");
 
     final response = await http.put(
-      Uri.parse(ApiConstants.endOrder.replaceAll("id", orderModel.id)),
+      Uri.parse(ApiConstants.endOrder.replaceAll("id", "${orderModel.id}")),
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, bool>{
-        "delivered":false
+        "delivered":true
       }),
     );
 

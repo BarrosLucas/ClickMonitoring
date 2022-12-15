@@ -37,7 +37,9 @@ abstract class ControllerBase with Store{
   updateInfo(OrderModel order) async{
     try {
       lastMeasure = await (MeasureRequest().getLastMeasureOpenOrder());
-      currentCoordinates = gMap.LatLng(double.parse(lastMeasure!.latitude), double.parse(lastMeasure!.longitude));
+      if(lastMeasure != null){
+        currentCoordinates = gMap.LatLng(double.parse(lastMeasure!.latitude), double.parse(lastMeasure!.longitude));
+      }
     } catch (e) {
       print(e.toString());
     }

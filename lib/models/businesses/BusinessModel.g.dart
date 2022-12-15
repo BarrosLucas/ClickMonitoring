@@ -8,7 +8,7 @@ part of 'BusinessModel.dart';
 
 BusinessModel _$BusinessModelFromJson(Map<String, dynamic> json) =>
     BusinessModel(
-      json['id'] as String,
+      json['id'] as int,
       json['name'] as String,
       json['cnpj'] as String,
       json['contact'] as String,

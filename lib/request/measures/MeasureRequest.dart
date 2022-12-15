@@ -21,7 +21,7 @@ class MeasureRequest{
     }
   }
 
-  Future<List<MeasureModel>> getMeasuresByOrder(String order)async{
+  Future<List<MeasureModel>> getMeasuresByOrder(int order)async{
     try{
       List<MeasureModel> allMeasures = await fetchMeasures();
       List<MeasureModel> measuresOrder = [];
@@ -40,13 +40,13 @@ class MeasureRequest{
 
   Future<MeasureModel?> getLastMeasureOpenOrder()async{
     try{
-      String order = "";
+      int order = -1;
       await OrderRequest().openOrder().then((value){
         if(value != null){
           order = value.id;
         }
       });
-      if(order.isNotEmpty){
+      if(order!=-1){
         List<MeasureModel> allMeasures = await getMeasuresByOrder(order);
         if(allMeasures.isNotEmpty){
           MeasureModel lastMeasure = allMeasures.first;

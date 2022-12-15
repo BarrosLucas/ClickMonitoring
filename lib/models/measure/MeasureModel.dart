@@ -5,8 +5,8 @@ part 'MeasureModel.g.dart';
 
 @JsonSerializable()
 class MeasureModel{
-  final String id;
-  final String order;
+  final int id;
+  final int order;
   final String latitude;
   final String longitude;
   final String timestamp;

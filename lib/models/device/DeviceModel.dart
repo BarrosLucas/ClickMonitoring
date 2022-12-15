@@ -5,11 +5,11 @@ part 'DeviceModel.g.dart';
 
 @JsonSerializable()
 class DeviceModel{
-  final String id;
+  final int id;
   final bool used;
   final String updated;
   final String created;
-  final String business;
+  final int business;
 
   DeviceModel(this.id, this.used, this.updated, this.created, this.business);
 

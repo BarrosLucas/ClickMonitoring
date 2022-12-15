@@ -19,6 +19,8 @@ class NavigationItem extends StatelessWidget {
           } else {
             controller.setVisibilityDialog(true);
           }
+        }else{
+          controller.setPage(page);
         }
       },
       child: Container(

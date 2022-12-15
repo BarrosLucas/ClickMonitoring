@@ -6,7 +6,7 @@ part 'BusinessModel.g.dart';
 
 @JsonSerializable()
 class BusinessModel{
-  final String id;
+  final int id;
   final String name;
   final String cnpj;
   final String contact;

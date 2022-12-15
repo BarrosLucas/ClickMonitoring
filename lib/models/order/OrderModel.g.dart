@@ -7,16 +7,16 @@ part of 'OrderModel.dart';
 // **************************************************************************
 
 OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
-      json['id'] as String,
+      json['id'] as int,
       json['longitude_destiny'] as String,
       json['latitude_destiny'] as String,
       json['latitude_origin'] as String,
       json['longitude_origin'] as String,
       json['datetime_start'] as String,
       json['datetime_end'] as String,
-      json['vehicle_id'] as String,
+      json['vehicle_id'] as int,
       json['description'] as String,
-      json['business'] as String,
+      json['business'] as int,
       json['delivered'] as bool,
     );
 

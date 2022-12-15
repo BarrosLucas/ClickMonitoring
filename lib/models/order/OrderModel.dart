@@ -5,16 +5,16 @@ part 'OrderModel.g.dart';
 
 @JsonSerializable()
 class OrderModel{
-  final String id;
+  final int id;
   final String longitude_destiny;
   final String latitude_destiny;
   final String latitude_origin;
   final String longitude_origin;
   final String datetime_start;
   final String datetime_end;
-  final String vehicle_id;
+  final int vehicle_id;
   final String description;
-  final String business;
+  final int business;
   final bool delivered;
 
   OrderModel(this.id, this.longitude_destiny, this.latitude_destiny,

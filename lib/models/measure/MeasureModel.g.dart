@@ -7,8 +7,8 @@ part of 'MeasureModel.dart';
 // **************************************************************************
 
 MeasureModel _$MeasureModelFromJson(Map<String, dynamic> json) => MeasureModel(
-      json['id'] as String,
-      json['order'] as String,
+      json['id'] as int,
+      json['order'] as int,
       json['latitude'] as String,
       json['longitude'] as String,
       json['timestamp'] as String,

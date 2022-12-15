@@ -49,7 +49,7 @@ abstract class ControllerBase with Store{
   @action
   newOrder() async{
     await (BusinessRequest().getBusinessUser()).then((value) {
-      OrderModel orderModel = OrderModel("", "", "", "", "", "", "", "23", "De ${origin.text} para ${destiny.text}", value.id,false);
+      OrderModel orderModel = OrderModel(0, "", "", "", "", "", "", 1, "De ${origin.text} para ${destiny.text}", value.id,false);
       (OrderRequest().newOrder(orderModel));
     });
   }
@@ -81,11 +81,13 @@ abstract class ControllerBase with Store{
         lastMeasure = await (MeasureRequest().getLastMeasureOpenOrder());
         measures = await (MeasureRequest().getMeasuresByOrder(order!.id));
 
-        print("Ultima medicao: \n${lastMeasure!.toJson()}");
-        print("Medicoes: ");
-        if(measures != null){
-          for(var i in measures!){
-            print("${i.toJson()}");
+        if(lastMeasure!=null){
+          print("Ultima medicao: \n${lastMeasure!.toJson()}");
+          print("Medicoes: ");
+          if(measures != null){
+            for(var i in measures!){
+              print("${i.toJson()}");
+            }
           }
         }
 
