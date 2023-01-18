@@ -5,7 +5,7 @@ import 'package:embarcados/request/ApiConstants.dart';
 import 'package:http/http.dart' as http;
 
 class OrderRequest{
-  Future<List<OrderModel>> fetchOrders() async {
+  Future<List<OrderModel>?> fetchOrders() async {
     final response = await http.get(
       Uri.parse(ApiConstants.getOrders),
       headers: <String, String>{
@@ -23,12 +23,14 @@ class OrderRequest{
   }
   Future<OrderModel?> openOrder() async {
     try{
-      List<OrderModel> allOrders = await fetchOrders();
-      for(var i in allOrders){
-        if(i.delivered==false){
-          print("Entrega em aberto:");
-          print(i.toJson());
-          return i;
+      List<OrderModel> ?allOrders = await fetchOrders();
+      if(allOrders != null){
+        for(var i in allOrders){
+          if(i.delivered==false){
+            print("Entrega em aberto:");
+            print(i.toJson());
+            return i;
+          }
         }
       }
       return null;

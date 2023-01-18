@@ -8,6 +8,8 @@ class Support extends StatelessWidget {
     return Column(
       children: [
         Text("entrar em contato com o suporte é rápido e fácil! para isso, basta clicar no botão abaixo!", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, fontFamily: 'Bungee'),textAlign: TextAlign.center,),
+        Text("Funcionamento: 08:00 até 08:05", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Bungee'),textAlign: TextAlign.start,),
+        Text("(apenas dias úteis)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Bungee'),textAlign: TextAlign.start,),
         Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

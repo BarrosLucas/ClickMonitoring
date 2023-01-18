@@ -41,6 +41,14 @@ abstract class ControllerBase with Store{
   @observable
   TextEditingController destiny = TextEditingController();
 
+  @observable
+  OrderModel ?orderCurrentClick;
+
+  @action
+  setOrderCurrentClick(OrderModel orderModel){
+    orderCurrentClick = orderModel;
+  }
+
   @action
   setVisibilityDialog(bool visibility){
     visibleDialog = visibility;
@@ -59,7 +67,9 @@ abstract class ControllerBase with Store{
     try{
       order = await(OrderRequest().openOrder());
       if(order == null){
-        page = 2;
+        if(page == 7 || page ==0){
+          page = 2;
+        }
       }else{
         if(page == 2){
           page = 7;

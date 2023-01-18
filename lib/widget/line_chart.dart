@@ -65,8 +65,12 @@ class LineChartContent extends StatelessWidget {
 
   List<LineChartBarData> generateSpots(){
     List<FlSpot> spots = [];
-    for(var i = 0; i < measures.length; i++){
-      spots.add(FlSpot(i+1, measures.elementAt(i).temperature));
+    if(measures.isNotEmpty) {
+      for (var i = 0; i < measures.length; i++) {
+        spots.add(FlSpot(i + 1, measures
+            .elementAt(i)
+            .temperature));
+      }
     }
     return [
       LineChartBarData(
@@ -79,6 +83,9 @@ class LineChartContent extends StatelessWidget {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     String text;
+    if(measures.isEmpty){
+      return Container();
+    }
     if(value.toInt() > measures.length){
       print("Excedeu: $value");
       return Container();

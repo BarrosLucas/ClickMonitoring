@@ -15,24 +15,35 @@ abstract class ControllerBase with Store {
 
   @observable
   var stopsList = ObservableList<int>();
+
+  @observable
+  ObservableList<OrderModel> ?orders = ObservableList();
   
   @action 
   loadData()async{
     startsList.clear();
     finishesList.clear();
     stopsList.clear();
-    List<OrderModel> orders = await (OrderRequest().fetchOrders());
-    for(var i in orders){
-      DateTime tempDateStart = DateTime.parse(i.datetime_start);
-      DateTime tempDateFinish = DateTime.parse(i.datetime_end);
+    List<OrderModel> ?ordersList = (await (OrderRequest().fetchOrders()));
+    if(ordersList!=null){
+      orders = ObservableList.of(ordersList);
+    }else{
+      orders = null;
+    }
 
+    if(orders != null){
+      for (var i in orders!) {
+        DateTime tempDateStart = DateTime.parse(i.datetime_start);
+        DateTime tempDateFinish = DateTime.parse(i.datetime_end);
 
-      startsList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateStart));
+        startsList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateStart));
 
-      if(i.delivered){
-        finishesList.add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateFinish));
-      }else{
-        finishesList.add("EM TRÂNSITO");
+        if (i.delivered) {
+          finishesList
+              .add(DateFormat("dd/MM/yyyy hh:mm:ss").format(tempDateFinish));
+        } else {
+          finishesList.add("EM TRÂNSITO");
+        }
       }
     }
   }

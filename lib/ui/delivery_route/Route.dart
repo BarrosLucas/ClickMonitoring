@@ -26,21 +26,25 @@ class RouteState extends State<Route> {
   @override
   Widget build(BuildContext context) {
 
-    return FutureBuilder<bool>(
-        future: controller.loadRoute(widget.appController.order!),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if(snapshot.hasData){
-            return Scaffold(
-                body:getMap()
-            );
-          }else{
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+    if(widget.appController.orderCurrentClick != null){
+      return FutureBuilder<bool>(
+          future: controller.loadRoute(widget.appController.orderCurrentClick!),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if(snapshot.hasData){
+              return Scaffold(
+                  body:getMap()
+              );
+            }else{
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           }
-        }
 
-    );
+      );
+    }else{
+      return Container();
+    }
 
 
   }
@@ -264,7 +268,7 @@ class RouteState extends State<Route> {
               Row(
                 children: [
                   const Text("Temperatura Média da Carga: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                  Text("${controller.temperature}° C",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                  Text("${controller.temperature.toStringAsFixed(2)}° C",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
                 ],
               ),
               Row(

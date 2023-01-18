@@ -80,13 +80,13 @@ class _AppViewState extends State<AppView> {
             case 3:
               return Entregas(appViewController: controller,);
             case 4:
-              return History(orderModel: controller.order!,);
+              return History(orderModel: controller.orderCurrentClick!,);
             case 5:
               return R.Route(appController: controller,);
             case 6:
               return Account();
           }
-          return MapsPage(controller: controller,);
+          return MapsPage(key: UniqueKey(),controller: controller,);
         }
       },
     );

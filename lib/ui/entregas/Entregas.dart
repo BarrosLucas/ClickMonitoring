@@ -47,6 +47,7 @@ class _EntregasState extends State<Entregas> {
         icons.add(InkWell(
           child: Image.asset("assets/images/search.png",height: 25,width: 25,),
           onTap: (){
+            widget.appViewController.setOrderCurrentClick(controller.orders!.elementAt(a));
             widget.appViewController.setPage(4);
           },
         ));
@@ -60,6 +61,7 @@ class _EntregasState extends State<Entregas> {
             if(controller.finishesList.elementAt(a)=="EM TRÂNSITO"){
               widget.appViewController.setPage(1);
             }else{
+              widget.appViewController.setOrderCurrentClick(controller.orders!.elementAt(a));
               widget.appViewController.setPage(5);
             }
           },

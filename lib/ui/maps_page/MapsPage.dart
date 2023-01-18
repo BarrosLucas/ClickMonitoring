@@ -21,19 +21,29 @@ class MapsPage extends StatefulWidget {
 class MapsPageState extends State<MapsPage> {
   Controller controller = Controller();
   gMap.Marker ?marker;
+
   @override
   void initState() {
+    print("INIT");
     // TODO: implement initState
     super.initState();
     try{
       Timer.periodic(const Duration(seconds: 15), (Timer t) {
-        setState(() {
+        if(mounted){
+          setState(() {
+            controller.updateInfo(widget.controller.order!);
+            if(marker != null){
+              marker!.position = controller.currentCoordinates;
+              print("Set position");
+            }
+          });
+        }else{
           controller.updateInfo(widget.controller.order!);
           if(marker != null){
             marker!.position = controller.currentCoordinates;
             print("Set position");
           }
-        });
+        }
       });
     }catch(e){
       print(e.toString());
@@ -42,6 +52,7 @@ class MapsPageState extends State<MapsPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("BUILD");
     controller.updateInfo(widget.controller.order!);
     return Observer(
       builder: (_){
@@ -50,9 +61,8 @@ class MapsPageState extends State<MapsPage> {
     );
   }
 
-
   Widget getMap(){
-    String htmlId = "7";
+    String htmlId = "97";
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
@@ -215,27 +225,26 @@ class MapsPageState extends State<MapsPage> {
       );
 
       marker!.onClick.listen((e) {
-        setState(() {
-          if(controller.lastMeasure!=null){
-            controller.setVisible(true,
-                widget.controller.order!.description,
-                controller.lastMeasure!.speed,
-                controller.lastMeasure!.temperature,
-                controller.lastMeasure!.umidity,
-                (controller.lastMeasure!.temperature < 5)?
-                "Saudável":"Alerta"
-            );
-          }else{
-            controller.setVisible(true,
-                widget.controller.order!.description,
-                0,
-                0,
-                0,
-                "---"
-            );
-          }
-        });
-      });
+        print("CLICOU");
+        if(controller.lastMeasure!=null){
+              controller.setVisible(true,
+                  widget.controller.order!.description,
+                  controller.lastMeasure!.speed,
+                  controller.lastMeasure!.temperature,
+                  controller.lastMeasure!.umidity,
+                  (controller.lastMeasure!.temperature < 5)?
+                  "Saudável":"Alerta"
+              );
+            }else{
+              controller.setVisible(true,
+                  widget.controller.order!.description,
+                  0,
+                  0,
+                  0,
+                  "---"
+              );
+            }
+          });
 
       return elem;
     });

@@ -271,7 +271,7 @@ class AcompanharState extends State<Acompanhar> {
   Widget windowTapMarker(){
     return Observer(builder: (_){
       return Container(
-        width: 290,
+        width: 305,
         height: 220,
         padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 20),
         decoration: const BoxDecoration(
@@ -287,13 +287,13 @@ class AcompanharState extends State<Acompanhar> {
             Row(
               children: [
                 const Text("Velocidade: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                Text("${controller.speed}km/h",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                Text("${controller.speed.toStringAsFixed(2)}km/h",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
               ],
             ),
             Row(
               children: [
                 const Text("Temperatura da Carga: ",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
-                Text("${controller.temperature}° C",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
+                Text("${controller.temperature.toStringAsFixed(2)}° C",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'Inika'),textAlign: TextAlign.left,),
               ],
             ),
             Row(
